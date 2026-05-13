@@ -1,5 +1,5 @@
 {
-  "name": "@kab/opencode-memory-plugin",
+  "name": "@transportrefer/opencode-memory-plugin",
   "version": "0.1.0",
   "description": "Lightweight Markdown memory for OpenCode agents, with repo-scoped recall and read-only Codex memory/session search.",
   "type": "module",

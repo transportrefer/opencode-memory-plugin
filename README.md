@@ -54,7 +54,7 @@ Once the package is published, your OpenCode config can use the package name ins
 
 ```jsonc
 {
-  "plugin": ["@kab/opencode-memory-plugin"]
+  "plugin": ["@transportrefer/opencode-memory-plugin"]
 }
 ```
 
