@@ -1,25 +1,27 @@
 {
   "name": "@kab/opencode-memory-plugin",
   "version": "0.1.0",
-  "description": "Lightweight Markdown memory for OpenCode agents, with repo-scoped recall and read-only Codex memory search.",
+  "description": "Lightweight Markdown memory for OpenCode agents, with repo-scoped recall and read-only Codex memory/session search.",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "license": "MIT",
   "author": "kab",
-  "homepage": "https://github.com/kab/opencode-memory-plugin#readme",
+  "homepage": "https://github.com/transportrefer/opencode-memory-plugin#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kab/opencode-memory-plugin.git"
+    "url": "git+https://github.com/transportrefer/opencode-memory-plugin.git"
   },
   "bugs": {
-    "url": "https://github.com/kab/opencode-memory-plugin/issues"
+    "url": "https://github.com/transportrefer/opencode-memory-plugin/issues"
   },
   "keywords": [
     "opencode",
+    "opencode-ai",
     "opencode-plugin",
     "opencode-memory",
+    "opencode-memory-plugin",
     "memory",
     "agent-memory",
     "llm-memory",
@@ -30,6 +32,10 @@
     "coding-agent",
     "agent-tools",
     "codex-memory",
+    "codex-sessions",
+    "codex-transcripts",
+    "codex-session-search",
+    "codex-history",
     "codex"
   ],
   "exports": {

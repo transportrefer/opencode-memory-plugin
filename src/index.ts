@@ -1,16 +1,21 @@
 import { type Plugin, type PluginModule, tool } from "@opencode-ai/plugin";
 import {
   CONFIDENCE_LEVELS,
+  CODEX_SESSION_MATCH_MODES,
+  CODEX_SESSION_MODES,
+  CODEX_SESSION_ROLES,
   MEMORY_SCOPES,
   MEMORY_TYPES,
   RECALL_SCOPES,
   formatCodexMatches,
+  formatCodexSessionSearch,
   formatEntries,
   formatList,
   listMemory,
   recallMemory,
   rememberMemory,
   searchCodexMemory,
+  searchCodexSessions,
   supersedeMemory,
 } from "./core.js";
 
@@ -160,6 +165,92 @@ export const OpenCodeMemoryPlugin: Plugin = async (_ctx, options = {}) => {
             limit: args.limit,
           });
           return formatCodexMatches(matches);
+        },
+      }),
+
+      codex_session_search: tool({
+        description:
+          "Search raw Codex session JSONL transcripts read-only. Use for repo-scoped history lookup, user-prompt search, and compact transcripts without verbose tool-call data. Defaults to current repo, recent user prompts, and standard ~/.codex/sessions JSONL only.",
+        args: {
+          query: schema.string().optional().describe("Keyword query. Defaults to recent matching items without a keyword filter."),
+          mode: schema
+            .enum(CODEX_SESSION_MODES)
+            .optional()
+            .describe("Output mode: prompts, sessions, or transcript. Defaults to prompts."),
+          role: schema
+            .enum(CODEX_SESSION_ROLES)
+            .optional()
+            .describe("Which messages to search. Defaults to user for prompts and all for transcript/sessions."),
+          match: schema
+            .enum(CODEX_SESSION_MATCH_MODES)
+            .optional()
+            .describe("Keyword matching mode. all requires every query token; any accepts any token. Defaults to all."),
+          repo: schema
+            .string()
+            .optional()
+            .describe("Repo/path filter. Defaults to the current OpenCode working directory unless allRepos=true."),
+          allRepos: schema.boolean().optional().describe("Search sessions from all repos instead of the current repo."),
+          session: schema.string().optional().describe("Session id substring or absolute .jsonl file path to read."),
+          since: schema.string().optional().describe("Only sessions on/after this date or ISO timestamp."),
+          until: schema.string().optional().describe("Only sessions on/before this date or ISO timestamp."),
+          limit: schema.number().optional().describe("Maximum prompt/session results. Defaults to 20."),
+          maxSessions: schema
+            .number()
+            .optional()
+            .describe("Maximum recent session files to scan. Defaults to 200 unless deep=true or allSessions=true."),
+          deep: schema
+            .boolean()
+            .optional()
+            .describe("Scan all candidate session files for high recall. Use when a capped search says it was partial."),
+          allSessions: schema.boolean().optional().describe("Scan every Codex session file. Can be slower on large histories."),
+          codexHome: schema
+            .string()
+            .optional()
+            .describe("Optional Codex home directory override. Defaults to CODEX_HOME when set, otherwise ~/.codex."),
+          codexSessionsRoot: schema
+            .string()
+            .optional()
+            .describe("Optional exact sessions directory override. Overrides codexHome."),
+          includeTools: schema
+            .boolean()
+            .optional()
+            .describe("Include compact tool-call/tool-output summaries. Defaults to false to avoid verbose transcript data."),
+          includeSynthetic: schema
+            .boolean()
+            .optional()
+            .describe("Include injected context messages such as AGENTS/environment wrappers. Defaults to false."),
+        },
+        async execute(args, context) {
+          const result = await searchCodexSessions({
+            query: args.query,
+            mode: args.mode,
+            role: args.role,
+            match: args.match,
+            repo: args.allRepos ? undefined : args.repo || context.directory,
+            session: args.session,
+            since: args.since,
+            until: args.until,
+            limit: args.limit,
+            maxSessions: args.maxSessions,
+            allSessions: args.allSessions,
+            deep: args.deep,
+            codexHome: args.codexHome,
+            codexSessionsRoot: args.codexSessionsRoot,
+            includeTools: args.includeTools,
+            includeSynthetic: args.includeSynthetic,
+          });
+          context.metadata({
+            title: `Codex sessions: ${result.sessionsMatched} result(s)`,
+            metadata: {
+              root: result.root,
+              repo: result.repo,
+              filesScanned: result.filesScanned,
+              filesConsidered: result.filesConsidered,
+              partial: result.partial,
+              mode: result.mode,
+            },
+          });
+          return formatCodexSessionSearch(result);
         },
       }),
     },

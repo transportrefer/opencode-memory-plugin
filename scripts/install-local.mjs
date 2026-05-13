@@ -42,7 +42,7 @@ async function installPluginRef() {
 
 async function installCommands() {
   await mkdir(commandsDir, { recursive: true });
-  const commands = ["memory.md", "remember.md", "codex-memory.md"];
+  const commands = ["memory.md", "remember.md", "codex-memory.md", "codex-sessions.md"];
   const installed = [];
   for (const name of commands) {
     const source = path.join(repoRoot, "commands", name);

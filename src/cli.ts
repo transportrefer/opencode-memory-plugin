@@ -5,12 +5,14 @@ import {
   type MemoryType,
   type RecallScope,
   formatCodexMatches,
+  formatCodexSessionSearch,
   formatEntries,
   formatList,
   listMemory,
   recallMemory,
   rememberMemory,
   searchCodexMemory,
+  searchCodexSessions,
   supersedeMemory,
 } from "./core.js";
 
@@ -27,7 +29,13 @@ function parseArgs(argv: string[]): ParsedArgs {
   for (let index = 0; index < rest.length; index += 1) {
     const token = rest[index];
     if (token.startsWith("--")) {
-      const key = token.slice(2);
+      const inline = token.slice(2);
+      const equalsIndex = inline.indexOf("=");
+      if (equalsIndex !== -1) {
+        flags[inline.slice(0, equalsIndex)] = inline.slice(equalsIndex + 1);
+        continue;
+      }
+      const key = inline;
       const next = rest[index + 1];
       if (next && !next.startsWith("--")) {
         flags[key] = next;
@@ -56,6 +64,7 @@ Usage:
   opencode-memory-plugin list [--dir <path>] [--scope all|repo|user|global]
   opencode-memory-plugin supersede <query> [--replacement <note>] [--reason <why>] [--dir <path>]
   opencode-memory-plugin codex-search <query> [--depth summary-registry-rollouts] [--limit 20]
+  opencode-memory-plugin codex-sessions [query] [--repo <path>|--all-repos] [--mode prompts|sessions|transcript] [--role user|assistant|all] [--session <id-or-file>] [--limit 20] [--max-sessions 200|--deep|--all-sessions] [--codex-home <path>|--codex-sessions-root <path>]
 `;
 }
 
@@ -129,6 +138,35 @@ async function main(): Promise<number> {
       limit: flagString(args.flags, "limit") ? Number(flagString(args.flags, "limit")) : undefined,
     });
     console.log(formatCodexMatches(matches));
+    return 0;
+  }
+
+  if (args.command === "codex-sessions") {
+    const query = args.positional.join(" ").trim();
+    const maxSessions = flagString(args.flags, "max-sessions");
+    const result = await searchCodexSessions({
+      query: query || undefined,
+      mode: flagString(args.flags, "mode") as "sessions" | "prompts" | "transcript" | undefined,
+      role: flagString(args.flags, "role") as "all" | "user" | "assistant" | undefined,
+      match: flagString(args.flags, "match") as "all" | "any" | undefined,
+      repo: args.flags["all-repos"] ? undefined : flagString(args.flags, "repo") || directory,
+      session: flagString(args.flags, "session"),
+      since: flagString(args.flags, "since"),
+      until: flagString(args.flags, "until"),
+      limit: flagString(args.flags, "limit") ? Number(flagString(args.flags, "limit")) : undefined,
+      maxSessions: maxSessions ? Number(maxSessions) : undefined,
+      allSessions: Boolean(args.flags["all-sessions"]),
+      deep: Boolean(args.flags.deep),
+      includeTools: Boolean(args.flags["include-tools"]),
+      includeSynthetic: Boolean(args.flags["include-synthetic"]),
+      codexHome: flagString(args.flags, "codex-home"),
+      codexSessionsRoot: flagString(args.flags, "codex-sessions-root"),
+    });
+    if (args.flags.json) {
+      console.log(JSON.stringify(result, null, 2));
+    } else {
+      console.log(formatCodexSessionSearch(result));
+    }
     return 0;
   }
 
