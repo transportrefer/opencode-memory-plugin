@@ -24,12 +24,12 @@ async function fixture(): Promise<{ root: string; repo: string; memoryRoot: stri
 test("resolves project from git remote", async () => {
   const { repo, memoryRoot } = await fixture();
   execFileSync("git", ["init"], { cwd: repo, stdio: "ignore" });
-  execFileSync("git", ["remote", "add", "origin", "git@github.com:kab/example.git"], { cwd: repo, stdio: "ignore" });
+  execFileSync("git", ["remote", "add", "origin", "git@github.com:owner/example.git"], { cwd: repo, stdio: "ignore" });
 
   const project = await resolveProject(repo, memoryRoot);
 
   assert.equal(project.source, "remote");
-  assert.match(project.id, /^github.com-kab-example--[a-f0-9]{12}$/);
+  assert.match(project.id, /^github.com-owner-example--[a-f0-9]{12}$/);
 });
 
 test("explicit projects config overrides git/path identity", async () => {
