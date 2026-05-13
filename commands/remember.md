@@ -14,3 +14,4 @@ Steps:
 4. Choose the most fitting type from `decision`, `learning`, `preference`, `blocker`, `context`, `pattern`, `procedure`, `source`, `pitfall`, or `command`.
 5. Use `confidence="medium"` unless the user explicitly stated it or current repo/live evidence proves it.
 6. After saving, tell the user exactly what was added.
+7. Do not read memory files directly after saving unless the user asks for inspection.
