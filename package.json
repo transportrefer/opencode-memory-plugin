@@ -1,0 +1,68 @@
+{
+  "name": "@kab/opencode-memory-plugin",
+  "version": "0.1.0",
+  "description": "Lightweight Markdown memory for OpenCode agents, with repo-scoped recall and read-only Codex memory search.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "license": "MIT",
+  "author": "kab",
+  "homepage": "https://github.com/kab/opencode-memory-plugin#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kab/opencode-memory-plugin.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kab/opencode-memory-plugin/issues"
+  },
+  "keywords": [
+    "opencode",
+    "memory",
+    "agent-memory",
+    "markdown",
+    "coding-agent",
+    "codex"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "bin": {
+    "opencode-memory-plugin": "./dist/cli.js"
+  },
+  "files": [
+    "dist/cli.d.ts",
+    "dist/cli.js",
+    "dist/cli.js.map",
+    "dist/core.d.ts",
+    "dist/core.js",
+    "dist/core.js.map",
+    "dist/index.d.ts",
+    "dist/index.js",
+    "dist/index.js.map",
+    "commands",
+    "templates",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build && node --test \"dist/**/*.test.js\"",
+    "check": "npm run test",
+    "prepack": "npm run build",
+    "install:local": "node scripts/install-local.mjs"
+  },
+  "dependencies": {
+    "@opencode-ai/plugin": "^1.4.9"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.9",
+    "typescript": "^5.8.2"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.DS_Store
+*.log
+.env
+.env.*
+coverage/
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Real memories live in ~/.config/opencode/memory, not this source repo.
+memory/
+.opencode/memory/

@@ -1,0 +1,10 @@
+{
+  "projects": {
+    "example-project": {
+      "description": "Optional explicit project id for repos without a stable remote.",
+      "paths": ["/absolute/path/to/project"],
+      "remotes": ["git@github.com:owner/repo.git"],
+      "gitCommonDirs": ["/absolute/path/to/project/.git"]
+    }
+  }
+}
