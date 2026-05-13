@@ -18,10 +18,18 @@
   },
   "keywords": [
     "opencode",
+    "opencode-plugin",
+    "opencode-memory",
     "memory",
     "agent-memory",
+    "llm-memory",
+    "ai-memory",
+    "repo-memory",
+    "plain-text-memory",
     "markdown",
     "coding-agent",
+    "agent-tools",
+    "codex-memory",
     "codex"
   ],
   "exports": {
@@ -43,6 +51,7 @@
     "dist/index.d.ts",
     "dist/index.js",
     "dist/index.js.map",
+    "assets",
     "commands",
     "templates",
     "README.md",

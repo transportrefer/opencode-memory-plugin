@@ -6,6 +6,8 @@ OpenCode Memory gives your coding agent a small, inspectable memory layer withou
 
 Use it when you want future OpenCode sessions in the same repo to remember the few things that actually matter, while keeping every note readable, editable, and easy to supersede when it becomes stale.
 
+![OpenCode Memory saving repo and user notes inside an OpenCode session](assets/opencode-memory.png)
+
 ## Features
 
 - ✍️ **Markdown-first**: memory is text you can read, diff, edit, and delete.
@@ -134,6 +136,20 @@ Policy: Advisory only. Verify current repo/live state before acting.
 npm install
 npm test
 npm pack --dry-run
+```
+
+## Publishing Notes
+
+Suggested GitHub description:
+
+```text
+Lightweight Markdown memory for OpenCode agents, with repo-scoped recall and optional Codex memory search.
+```
+
+Suggested GitHub topics:
+
+```text
+opencode opencode-plugin opencode-memory ai-agents coding-agent llm-memory agent-memory markdown-memory codex-memory repo-memory
 ```
 
 ## License
